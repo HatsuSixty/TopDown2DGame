@@ -17,9 +17,15 @@ func _physics_process(delta):
 	direction = direction.normalized()
 	
 	if direction != Vector2.ZERO:
+		animation_tree.set("parameters/walking/blend_position", direction)
+		animation_tree.set("parameters/idle/blend_position", direction)
+		
 		velocity = velocity.move_toward(direction * MAX_VEL, ACELERATION * delta)
+		
+		animation_state.travel("walking")
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+		animation_state.travel("idle")
 	
 # warning-ignore:return_value_discarded
 	move_and_slide(velocity)
